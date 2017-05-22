@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/1.x/vue.js"></script>
+    <script src="../js/1.x/vue-router.js"></script>
+</head>
+<body>
+<template id="temp01">
+    <h1>this is page {{$route.params.id}} </h1>
+</template>
+<template id="temp02">
+    <h1>this is page temp02 {{$route.query["appid"]}}</h1>
+</template>
+<div id="demo07">
+    <a v-link="{path:'/user/foo'}">this is foo</a>
+    <a v-link="{path:'/user/bar'}">this is bar</a>
+    <a v-link="{name:'public.resf', query:{'appid':'fs'}}">this is bar</a>
+    <button @click="addNewPage">addNewPage</button>
+    <router-view></router-view>
+</div>
+</body>
+<script>
+
+    let router = new VueRouter();
+    const addNewPageComp = {
+        template: "<div>this is a add NewPage Comp</div>"
+    };
+
+    const temp = {
+        template: "#temp01",
+        created: function () {
+            console.log(this.$route.params);
+        }
+    }
+
+    const Opt = {
+        template: "#temp02"
+    };
+    router.map({
+        "/user/:id": {
+            component: temp
+        },
+        "/opt": {
+            name: 'public.resf',
+            component: Opt
+        },
+        "/newPage": {
+            name: 'addTask01',
+            component: addNewPageComp
+        }
+    });
+    var App = Vue.extend({
+        created: function () {
+            console.log("App created...");
+        },
+        methods: {
+            "addNewPage": function () {
+                console.log(this.$route.params);
+                this.$route.router.go({name: 'addTask01'});
+            }
+        }
+    });
+    router.start(App, "#demo07");
+</script>
+</html>

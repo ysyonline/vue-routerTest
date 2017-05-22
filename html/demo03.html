@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/2.x/vue.js"></script>
+    <script src="../js/2.x/vue-router.js"></script>
+</head>
+<body>
+<div id="demo03">
+    <p>
+        <router-link to="/user/foo">/user/foo</router-link>
+        <router-link to="/user/foo/profile">/user/foo/profile</router-link>
+        <router-link to="/user/foo/posts">/user/foo/posts</router-link>
+    </p>
+
+    <router-view></router-view>
+
+
+</div>
+</body>
+<script>
+    const User = {template: ' <div class="user"><h2>User {{ $route.params.id }}</h2><router-view></router-view></div>'};
+    const home = {template: "<div>home</div>"};
+    const profile = {template: "<div>profile</div>"};
+    const posts = {template: "<div>posts</div>"};
+
+    const router = new VueRouter({
+        routes: [
+            {
+                path: "/user/:id", component: User,
+                children: [
+                    {path: "", component: home},
+                    {path: "profile", component: profile},
+                    {path: "posts", component: posts}
+                ]
+            }
+        ]
+    });
+
+    new Vue({
+        router
+    }).$mount("#demo03");
+
+</script>
+</html>

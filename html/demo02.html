@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/2.x/vue.js"></script>
+    <script src="../js/2.x/vue-router.js"></script>
+</head>
+<body>
+<div id="demo02">
+    <p>
+        <router-link to="/user/foo">/user/foo</router-link>
+        <router-link to="/user/bar">/user/bar</router-link>
+    </p>
+
+    <router-view></router-view>
+
+    <my-com></my-com>
+
+</div>
+</body>
+<script>
+
+    const User = {template: "<div>{{$route.params.id}}</div>"};
+
+    const routes = [
+        {path: "/user/:id", component: User},
+    ];
+
+    const router = new VueRouter({
+        routes: routes
+    });
+
+    new Vue({
+        el: "#demo02",
+        router: router,
+        components: {
+            "my-com": {template: "<div>my-com</div>"}
+        },
+        watch: {
+            "$route": function (to, from) {
+                console.log(to);
+                console.log(from);
+            }
+        }
+    });
+</script>
+</html>
