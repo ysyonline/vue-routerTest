@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/1.x/vue.js"></script>
+</head>
+<body>
+<template id="todo-comp">
+    <input type="text" v-model="input"/>
+</template>
+<template id="yet-comp">
+    <div>{{yets}}
+    <but></but>
+    </div>
+</template>
+<div id="demo08">
+    <button @click="addNewPage">addNewPage</button>
+    <todos arg="juty"></todos>
+    <yet></yet>
+</div>
+</body>
+<script>
+	var but_comp = {
+		template: "<input type='text' v-model='dtt' @keyup.enter='writeout'/>",
+		data: function () {
+			return {
+				dtt: ""
+			}
+		},
+		events: {
+			'foldin-out': function (content) {
+				this.dtt = content;
+			}
+		},
+		methods: {
+            writeout: function () {
+                this.$dispatch('writeout', this.dtt);
+            }
+        }
+	};
+
+	var yet_comp = {
+		template: "#yet-comp",
+		data: function () {
+			return {
+				yets: "yets"
+			}
+		},
+		events: {
+			'foldin': function (content) {
+				//alert(content);
+				this.yets = content;
+				this.$broadcast('foldin-out', 'foldin-out')
+			},
+            'writeout' : function (val) {
+                //alert(val);
+                this.yets = val;
+            }
+		},
+		components: {
+			"but": but_comp
+		}
+	};
+
+	var todo_comp = {
+		props: ["arg"],
+		template: "#todo-comp",
+		data: function () {
+			console.log(this.arg);
+			return {
+				input: "default"
+			}
+		},
+		ready: function () {
+			this.input = this.arg;
+		},
+		events: {
+			'foldin': function (input) {
+				this.input = input;
+			}
+		}
+	};
+
+	var demo08 = new Vue({
+		el: "#demo08",
+		methods: {
+			addNewPage: function () {
+				let vm = this;
+				vm.$broadcast('foldin', 'fold in')
+			}
+		},
+		components: {
+			"todos": todo_comp,
+			"yet": yet_comp
+		}
+	});
+
+</script>
+</html>
