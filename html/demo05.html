@@ -11,27 +11,40 @@
     <p>
         <a v-link="{path: '/foo'}">/user/foo</a>
         <a v-link="{path: '/bar'}">/user/bar</a>
+        <a v-link="{name: 'ccc',query: {taskId: '123'}}">/user/ccc</a>
+        <button @click="back">back</button>
     </p>
-
     <router-view></router-view>
 </div>
 </body>
 <script>
+	const Main = {
+		template: "<div>HOME PAGE</div>"
+	};
+	const Foo = {
+		template: "<div>Foo</div>"
+	};
+	const Bar = {
+		template: "<div>Bar</div>"
+	}
+	const CCC = {
+		template: "<div>CCC</div>"
+	};
+	var router = new VueRouter();
 
-    const Foo = {
-        template: "<div>Foo</div>"
-    };
-    const Bar = {
-        template: "<div>Bar</div>"
-    }
-    var router = new VueRouter();
-
-    router.map({
-        "/foo": {component: Foo},
-        "/bar": {component: Bar}
-    });
-
-    router.start({}, "#demo05");
+	router.map({
+		"/main": {name: 'main', component: Main},
+		"/foo": {component: Foo},
+		"/bar": {component: Bar},
+		"/ccc": {name: "ccc", component: CCC}
+	});
+	router.start(Vue.extend({
+		methods: {
+			back: function () {
+				this.$route.router.go({name: 'main'});
+			}
+		}
+	}), "#demo05");
 
 
 </script>
